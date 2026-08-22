@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestGenerateIpAddressStringsToScanGeneratesTheExpectedIps(t *testing.T) {
+func TestGenerateIpAddressStringsGeneratesTheExpectedIps(t *testing.T) {
 	tests := []struct {
 		name string
 		from ip.IpAddress
@@ -30,7 +30,7 @@ func TestGenerateIpAddressStringsToScanGeneratesTheExpectedIps(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			pathToGolden := fmt.Sprintf("../snapshots/ip/generatesExpectedIps_%s.golden.txt", tt.name)
 
-			results := ip.GenerateIpAddressStringsToScan(tt.from, tt.to)
+			results := ip.GenerateIpAddressStrings(tt.from, tt.to)
 			resultsSingle := strings.Join(results, "\n")
 			resultsBytes := []byte(resultsSingle)
 
