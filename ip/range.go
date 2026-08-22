@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var GenerateIpAddressesToScan = func(fromIp IpAddress, toIp IpAddress) []string {
+var GenerateIpAddressStringsToScan = func(fromIp IpAddress, toIp IpAddress) []string {
 	currentIp := make(IpAddress, len(fromIp))
 	copy(currentIp, fromIp)
 
