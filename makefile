@@ -23,3 +23,7 @@ build-prod: vet lint
 test:
 	go test -v ./...
 .PHONY:test
+
+update-test-snapshots:
+	go test ./ip... -v -update
+.PHONY:update-test-snapshots

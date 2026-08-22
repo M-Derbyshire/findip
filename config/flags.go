@@ -1,6 +1,7 @@
 package config
 
 import (
+	"findip/ip"
 	"flag"
 	"fmt"
 	"strconv"
@@ -39,18 +40,18 @@ func ParseConfigFromFlags() (Config, error) {
 	return config, nil
 }
 
-func parseIpV4String(ipStr string) ([]byte, error) {
+func parseIpV4String(ipStr string) (ip.IpAddress, error) {
 	segmentStrs := strings.Split(ipStr, ".")
 	if len(segmentStrs) != 4 {
-		return []byte{}, fmt.Errorf("ip address '%s' should have 4 segments", ipStr)
+		return ip.IpAddress{}, fmt.Errorf("ip address '%s' should have 4 segments", ipStr)
 	}
 
-	segmentBytes := make([]byte, 0, 4)
+	segmentBytes := make(ip.IpAddress, 0, 4)
 
 	for _, segmentStr := range segmentStrs {
 		segNum, err := strconv.ParseUint(segmentStr, 10, 8)
 		if err != nil {
-			return []byte{}, fmt.Errorf("ip address segment '%s' in ip address '%s' is not valid", segmentStr, ipStr)
+			return ip.IpAddress{}, fmt.Errorf("ip address segment '%s' in ip address '%s' is not valid", segmentStr, ipStr)
 		}
 
 		segmentBytes = append(segmentBytes, byte(segNum))

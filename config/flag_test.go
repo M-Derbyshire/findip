@@ -2,14 +2,15 @@ package config_test
 
 import (
 	"findip/config"
+	"findip/ip"
 	"flag"
 	"os"
 	"testing"
 )
 
 func TestParseConfigFromFlagsWillSetTheCorrectDefaults(t *testing.T) {
-	expectedFromIp := []byte{192, 168, 0, 1}
-	expectedToIp := []byte{192, 168, 0, 100}
+	expectedFromIp := ip.IpAddress{192, 168, 0, 1}
+	expectedToIp := ip.IpAddress{192, 168, 0, 100}
 	expectedPort := uint(80)
 	expectedEndpoint := ""
 	expectedConcurrentRequests := uint(32)
@@ -42,8 +43,8 @@ func TestParseConfigFromFlagsWillSetTheCorrectDefaults(t *testing.T) {
 }
 
 func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
-	expectedFromIp := []byte{191, 167, 5, 10}
-	expectedToIp := []byte{193, 169, 6, 12}
+	expectedFromIp := ip.IpAddress{191, 167, 5, 10}
+	expectedToIp := ip.IpAddress{193, 169, 6, 12}
 	expectedPort := uint(81)
 	expectedEndpoint := "/test"
 	expectedConcurrentRequests := uint(64)
@@ -178,7 +179,7 @@ func TestParseConfigFromFlagsWillReturnErrorIfInvalidIpAddress(t *testing.T) {
 	}
 }
 
-func testIpAddress(t *testing.T, resultIp []byte, expectedIp []byte, propertyName string) {
+func testIpAddress(t *testing.T, resultIp ip.IpAddress, expectedIp ip.IpAddress, propertyName string) {
 	if len(resultIp) != len(expectedIp) {
 		t.Errorf("expected %s length to be %d. got %d", propertyName, len(expectedIp), len(resultIp))
 	} else {
