@@ -38,3 +38,19 @@ func TestGenerateIpAddressStringsGeneratesTheExpectedIps(t *testing.T) {
 		})
 	}
 }
+
+func TestGenerateIpAddressStringsWillGenerateSingleIpIfFromAndToAreSame(t *testing.T) {
+	ipAddress := ip.IpAddress{192, 168, 5, 12}
+	expectedStr := "192.168.5.12"
+
+	results := ip.GenerateIpAddressStrings(ipAddress, ipAddress)
+
+	if len(results) != 1 {
+		t.Errorf("expected single result. got %d", len(results))
+		return
+	}
+
+	if results[0] != expectedStr {
+		t.Errorf("expected result to be '%s'. got '%s'", expectedStr, results[0])
+	}
+}

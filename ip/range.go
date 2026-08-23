@@ -6,6 +6,10 @@ import (
 )
 
 var GenerateIpAddressStrings = func(fromIp IpAddress, toIp IpAddress) []string {
+	if ipAddressesAreEqual(fromIp, toIp) {
+		return []string{convertIpAddressToString(fromIp)}
+	}
+
 	currentIp := make(IpAddress, len(fromIp))
 	copy(currentIp, fromIp)
 
