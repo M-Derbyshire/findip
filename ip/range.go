@@ -6,7 +6,7 @@ import (
 )
 
 var GenerateIpAddressStrings = func(fromIp IpAddress, toIp IpAddress) []string {
-	if ipAddressesAreEqual(fromIp, toIp) {
+	if IpAddressesAreEqual(fromIp, toIp) {
 		return []string{convertIpAddressToString(fromIp)}
 	}
 
@@ -22,7 +22,7 @@ var GenerateIpAddressStrings = func(fromIp IpAddress, toIp IpAddress) []string {
 		ipStr := convertIpAddressToString(currentIp)
 		ipsToScan = append(ipsToScan, ipStr)
 
-		lastIpHasBeenProcessed = ipAddressesAreEqual(currentIp, toIp)
+		lastIpHasBeenProcessed = IpAddressesAreEqual(currentIp, toIp)
 	}
 
 	return ipsToScan
@@ -41,29 +41,6 @@ func incrementIpAddress(ip *IpAddress) {
 			return
 		}
 	}
-}
-
-func ipAddressesAreEqual(ip1 IpAddress, ip2 IpAddress) bool {
-	ip1IsNil := ip1 == nil
-	ip2IsNil := ip2 == nil
-
-	if ip1IsNil != ip2IsNil {
-		return false
-	}
-
-	if len(ip1) != len(ip2) {
-		return false
-	}
-
-	for i, val1 := range ip1 {
-		val2 := ip2[i]
-
-		if val1 != val2 {
-			return false
-		}
-	}
-
-	return true
 }
 
 func convertIpAddressToString(ip IpAddress) string {
