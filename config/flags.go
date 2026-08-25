@@ -3,9 +3,6 @@ package config
 import (
 	"findip/ip"
 	"flag"
-	"fmt"
-	"strconv"
-	"strings"
 )
 
 func ParseConfigFromFlags() (Config, error) {
@@ -18,12 +15,12 @@ func ParseConfigFromFlags() (Config, error) {
 
 	flag.Parse()
 
-	fromIp, err := parseIpV4String(*fromIpStr)
+	fromIp, err := ip.ParseIpV4String(*fromIpStr)
 	if err != nil {
 		return Config{}, err
 	}
 
-	toIp, err := parseIpV4String(*toIpStr)
+	toIp, err := ip.ParseIpV4String(*toIpStr)
 	if err != nil {
 		return Config{}, err
 	}
@@ -38,24 +35,4 @@ func ParseConfigFromFlags() (Config, error) {
 	}
 
 	return config, nil
-}
-
-func parseIpV4String(ipStr string) (ip.IpAddress, error) {
-	segmentStrs := strings.Split(ipStr, ".")
-	if len(segmentStrs) != 4 {
-		return ip.IpAddress{}, fmt.Errorf("ip address '%s' should have 4 segments", ipStr)
-	}
-
-	segmentBytes := make(ip.IpAddress, 0, 4)
-
-	for _, segmentStr := range segmentStrs {
-		segNum, err := strconv.ParseUint(segmentStr, 10, 8)
-		if err != nil {
-			return ip.IpAddress{}, fmt.Errorf("ip address segment '%s' in ip address '%s' is not valid", segmentStr, ipStr)
-		}
-
-		segmentBytes = append(segmentBytes, byte(segNum))
-	}
-
-	return segmentBytes, nil
 }
