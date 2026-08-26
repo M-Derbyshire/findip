@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"findip/ip"
 	"flag"
 )
@@ -23,6 +24,15 @@ func ParseConfigFromFlags() (Config, error) {
 	toIp, err := ip.ParseIpV4String(*toIpStr)
 	if err != nil {
 		return Config{}, err
+	}
+
+	ipsRightWayRound, err := ip.IpAddressIsLessThan(fromIp, toIp)
+	if err != nil {
+		return Config{}, err
+	}
+
+	if !ipsRightWayRound {
+		return Config{}, errors.New("-from ip address is greater than -to ip address")
 	}
 
 	config := Config{

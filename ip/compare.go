@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func IpAddressesAreEqual(ip1 IpAddress, ip2 IpAddress) bool {
+var IpAddressesAreEqual = func(ip1 IpAddress, ip2 IpAddress) bool {
 	ip1IsNil := ip1 == nil
 	ip2IsNil := ip2 == nil
 
@@ -28,7 +28,7 @@ func IpAddressesAreEqual(ip1 IpAddress, ip2 IpAddress) bool {
 	return true
 }
 
-func IpAddressIsLessThan(lowerIp IpAddress, higherIp IpAddress) (bool, error) {
+var IpAddressIsLessThan = func(lowerIp IpAddress, higherIp IpAddress) (bool, error) {
 	if lowerIp == nil || higherIp == nil {
 		return false, errors.New("ip addresses must not be nil")
 	}

@@ -1,6 +1,7 @@
 package config_test
 
 import (
+	"errors"
 	"findip/config"
 	"findip/ip"
 	util_test "findip/util"
@@ -143,5 +144,77 @@ func TestParseConfigFromFlagsWillReturnErrorIfInvalidIpAddress(t *testing.T) {
 				t.Errorf("expected error to be '%s'. got '%v'", expectedErr, err)
 			}
 		})
+	}
+}
+
+func TestParseConfigFromFlagsWillReturnErrorIfFromIpGreaterThanToIp(t *testing.T) {
+	// setup mocks
+	oldArgs := os.Args
+	oldCommandLine := flag.CommandLine
+	originalCheck := ip.IpAddressIsLessThan
+	defer func() {
+		ip.IpAddressIsLessThan = originalCheck
+		os.Args = oldArgs
+		flag.CommandLine = oldCommandLine
+	}()
+
+	os.Args = []string{
+		"appname",
+	}
+	flag.CommandLine = flag.NewFlagSet("test", flag.ContinueOnError)
+
+	ip.IpAddressIsLessThan = func(lowerIp ip.IpAddress, higherIp ip.IpAddress) (bool, error) {
+		return false, nil
+	}
+
+	// run
+	_, err := config.ParseConfigFromFlags()
+
+	// assert
+	if err == nil {
+		t.Error("expected error not to be nil")
+		return
+	}
+
+	expectedErrorMessage := "-from ip address is greater than -to ip address"
+
+	if err.Error() != expectedErrorMessage {
+		t.Errorf("expected error to be '%s'. got '%v'", expectedErrorMessage, err)
+	}
+}
+
+func TestParseConfigFromFlagsWillReturnErrorIfErrorWhenComparingIps(t *testing.T) {
+	// setup mocks
+	oldArgs := os.Args
+	oldCommandLine := flag.CommandLine
+	originalCheck := ip.IpAddressIsLessThan
+	defer func() {
+		ip.IpAddressIsLessThan = originalCheck
+		os.Args = oldArgs
+		flag.CommandLine = oldCommandLine
+	}()
+
+	os.Args = []string{
+		"appname",
+	}
+	flag.CommandLine = flag.NewFlagSet("test", flag.ContinueOnError)
+
+	expectedErrorMessage := "test error message 123"
+
+	ip.IpAddressIsLessThan = func(lowerIp ip.IpAddress, higherIp ip.IpAddress) (bool, error) {
+		return false, errors.New(expectedErrorMessage)
+	}
+
+	// run
+	_, err := config.ParseConfigFromFlags()
+
+	// assert
+	if err == nil {
+		t.Error("expected error not to be nil")
+		return
+	}
+
+	if err.Error() != expectedErrorMessage {
+		t.Errorf("expected error to be '%s'. got '%v'", expectedErrorMessage, err)
 	}
 }
