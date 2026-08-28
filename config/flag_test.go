@@ -15,7 +15,7 @@ func TestParseConfigFromFlagsWillSetTheCorrectDefaults(t *testing.T) {
 	expectedToIp := ip.IpAddress{192, 168, 0, 100}
 	expectedPort := uint(80)
 	expectedEndpoint := ""
-	expectedConcurrentRequests := uint(32)
+	expectedBatchSize := uint(32)
 	expectedTextToFind := "hello world!"
 
 	result, err := config.ParseConfigFromFlags()
@@ -35,8 +35,8 @@ func TestParseConfigFromFlagsWillSetTheCorrectDefaults(t *testing.T) {
 		t.Errorf("expected endpoint to be '%s'. got '%s'", expectedEndpoint, result.Endpoint)
 	}
 
-	if result.ConcurrentRequests != expectedConcurrentRequests {
-		t.Errorf("expected concurrent requests to be %d. got %d", expectedConcurrentRequests, result.ConcurrentRequests)
+	if result.BatchSize != expectedBatchSize {
+		t.Errorf("expected batch size to be %d. got %d", expectedBatchSize, result.BatchSize)
 	}
 
 	if result.TextToFind != expectedTextToFind {
@@ -49,7 +49,7 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 	expectedToIp := ip.IpAddress{193, 169, 6, 12}
 	expectedPort := uint(81)
 	expectedEndpoint := "/test"
-	expectedConcurrentRequests := uint(64)
+	expectedBatchSize := uint(64)
 	expectedTextToFind := "hello test!"
 
 	// setup mocks
@@ -66,7 +66,7 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 		"-to", "193.169.6.12",
 		"-port", "81",
 		"-endpoint", expectedEndpoint,
-		"-concurrentrequests", "64",
+		"-batchsize", "64",
 		"-searchtext", expectedTextToFind,
 	}
 
@@ -91,8 +91,8 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 		t.Errorf("expected endpoint to be '%s'. got '%s'", expectedEndpoint, result.Endpoint)
 	}
 
-	if result.ConcurrentRequests != expectedConcurrentRequests {
-		t.Errorf("expected concurrent requests to be %d. got %d", expectedConcurrentRequests, result.ConcurrentRequests)
+	if result.BatchSize != expectedBatchSize {
+		t.Errorf("expected batch size to be %d. got %d", expectedBatchSize, result.BatchSize)
 	}
 
 	if result.TextToFind != expectedTextToFind {
