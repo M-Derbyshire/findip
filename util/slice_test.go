@@ -17,7 +17,7 @@ func TestSplitSliceIntoMaxLengthSlicesWillSplitSliceCorrectly(t *testing.T) {
 	}
 
 	// act
-	results := util.SplitSliceIntoMaxLengthSlices(original, expectedSliceSize)
+	results := util.SplitSliceIntoMaxLengthSlices(original, uint(expectedSliceSize))
 
 	// assert
 	if len(results) != expectedSliceCount {
@@ -55,7 +55,7 @@ func TestSplitSliceIntoMaxLengthSlicesWillSplitSliceCorrectlyIfLastResultSliceLe
 	}
 
 	// act
-	results := util.SplitSliceIntoMaxLengthSlices(original, expectedSliceSize)
+	results := util.SplitSliceIntoMaxLengthSlices(original, uint(expectedSliceSize))
 
 	// assert
 	if len(results) != expectedSliceCount {
