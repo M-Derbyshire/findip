@@ -11,6 +11,7 @@ func ParseConfigFromFlags() (Config, error) {
 	toIpStr := flag.String("to", "192.168.0.100", "The IP V4 address to end scanning at (including this IP)")
 	port := flag.Uint("port", 80, "The port to send requests to during the scan")
 	endpoint := flag.String("endpoint", "", "The endpoint to send requests to during the scan")
+	protocol := flag.String("protocol", "http", "The protocol to use in requests (e.g. http or https)")
 	batchSize := flag.Uint("batchsize", 32, "How many concurrent HTTP requests should be sent out at once?")
 	textToFind := flag.String("searchtext", "hello world!", "The text that we want to find in a HTTP response body")
 
@@ -40,6 +41,7 @@ func ParseConfigFromFlags() (Config, error) {
 		ToIp:       toIp,
 		Port:       *port,
 		Endpoint:   *endpoint,
+		Protocol:   *protocol,
 		BatchSize:  *batchSize,
 		TextToFind: *textToFind,
 	}

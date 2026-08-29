@@ -15,6 +15,7 @@ func TestParseConfigFromFlagsWillSetTheCorrectDefaults(t *testing.T) {
 	expectedToIp := ip.IpAddress{192, 168, 0, 100}
 	expectedPort := uint(80)
 	expectedEndpoint := ""
+	expectedProtocol := "http"
 	expectedBatchSize := uint(32)
 	expectedTextToFind := "hello world!"
 
@@ -35,6 +36,10 @@ func TestParseConfigFromFlagsWillSetTheCorrectDefaults(t *testing.T) {
 		t.Errorf("expected endpoint to be '%s'. got '%s'", expectedEndpoint, result.Endpoint)
 	}
 
+	if result.Protocol != expectedProtocol {
+		t.Errorf("expected protocol to be '%s'. got '%s'", expectedProtocol, result.Protocol)
+	}
+
 	if result.BatchSize != expectedBatchSize {
 		t.Errorf("expected batch size to be %d. got %d", expectedBatchSize, result.BatchSize)
 	}
@@ -49,6 +54,7 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 	expectedToIp := ip.IpAddress{193, 169, 6, 12}
 	expectedPort := uint(81)
 	expectedEndpoint := "/test"
+	expectedProtocol := "https"
 	expectedBatchSize := uint(64)
 	expectedTextToFind := "hello test!"
 
@@ -66,6 +72,7 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 		"-to", "193.169.6.12",
 		"-port", "81",
 		"-endpoint", expectedEndpoint,
+		"-protocol", expectedProtocol,
 		"-batchsize", "64",
 		"-searchtext", expectedTextToFind,
 	}
@@ -89,6 +96,10 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 
 	if result.Endpoint != expectedEndpoint {
 		t.Errorf("expected endpoint to be '%s'. got '%s'", expectedEndpoint, result.Endpoint)
+	}
+
+	if result.Protocol != expectedProtocol {
+		t.Errorf("expected protocol to be '%s'. got '%s'", expectedProtocol, result.Protocol)
 	}
 
 	if result.BatchSize != expectedBatchSize {
