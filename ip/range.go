@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-var GenerateIpAddressStrings = func(fromIp IpAddress, toIp IpAddress) []string {
+func GenerateIpAddressStrings(fromIp IpAddress, toIp IpAddress) []string {
 	if IpAddressesAreEqual(fromIp, toIp) {
 		return []string{convertIpAddressToString(fromIp)}
 	}
