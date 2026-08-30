@@ -13,26 +13,26 @@ func GenerateIpAddressStrings(fromIp IpAddress, toIp IpAddress) []string {
 	currentIp := make(IpAddress, len(fromIp))
 	copy(currentIp, fromIp)
 
-	ipsToScan := make([]string, 0, 1024) // capacity here is just a high value, to save on memory reshuffling in most cases
+	ipsToScan := make([]string, 0, 512) // capacity here is just a high value, to save on memory reshuffling in most cases
 
 	lastIpHasBeenProcessed := false
 	for !lastIpHasBeenProcessed {
-		incrementIpAddress(&currentIp)
-
 		ipStr := convertIpAddressToString(currentIp)
 		ipsToScan = append(ipsToScan, ipStr)
 
 		lastIpHasBeenProcessed = IpAddressesAreEqual(currentIp, toIp)
+		incrementIpAddress(&currentIp)
 	}
 
 	return ipsToScan
 }
 
+// If the IP address is at its max value, this is a no-op
 func incrementIpAddress(ip *IpAddress) {
 	// the segment index to increment (e.g. a value of 3 will edit the 4th segment -- the 10 in 192.168.0.10)
 	segmentToIncrement := len(*ip) - 1
 
-	for {
+	for segmentToIncrement > -1 {
 		if (*ip)[segmentToIncrement] == 255 {
 			(*ip)[segmentToIncrement] = 0
 			segmentToIncrement--
