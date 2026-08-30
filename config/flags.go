@@ -27,13 +27,15 @@ func ParseConfigFromFlags() (Config, error) {
 		return Config{}, err
 	}
 
-	ipsRightWayRound, err := ip.IpAddressIsLessThan(fromIp, toIp)
-	if err != nil {
-		return Config{}, err
-	}
+	if !ip.IpAddressesAreEqual(fromIp, toIp) {
+		ipsRightWayRound, err := ip.IpAddressIsLessThan(fromIp, toIp)
+		if err != nil {
+			return Config{}, err
+		}
 
-	if !ipsRightWayRound {
-		return Config{}, errors.New("-from ip address is greater than -to ip address")
+		if !ipsRightWayRound {
+			return Config{}, errors.New("-from ip address is greater than -to ip address")
+		}
 	}
 
 	config := Config{

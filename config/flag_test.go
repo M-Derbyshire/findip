@@ -81,12 +81,13 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 
 	// run
 	result, err := config.ParseConfigFromFlags()
+
+	// assert
 	if err != nil {
 		t.Errorf("expected error to be nil. got %v", err)
 		return
 	}
 
-	// assert
 	util_test.TestIpAddress(t, result.FromIp, expectedFromIp, "FromIp")
 	util_test.TestIpAddress(t, result.ToIp, expectedToIp, "ToIp")
 
@@ -109,6 +110,36 @@ func TestParseConfigFromFlagsWillParseCommandLineFlagValues(t *testing.T) {
 	if result.TextToFind != expectedTextToFind {
 		t.Errorf("expected text-to-find to be '%s'. got '%s'", expectedTextToFind, result.TextToFind)
 	}
+}
+
+func TestParseConfigFromFlagsWillReturnCorrectConfigIfIpsAreEqual(t *testing.T) {
+	// setup mocks
+	oldArgs := os.Args
+	oldCommandLine := flag.CommandLine
+	defer func() {
+		os.Args = oldArgs
+		flag.CommandLine = oldCommandLine
+	}()
+
+	os.Args = []string{
+		"appname",
+		"-from", "192.168.2.4",
+		"-to", "192.168.2.4",
+	}
+	flag.CommandLine = flag.NewFlagSet("test", flag.ContinueOnError)
+
+	// run
+	result, err := config.ParseConfigFromFlags()
+
+	// assert
+	if err != nil {
+		t.Errorf("expected error to be nil. got %v", err)
+		return
+	}
+
+	expectedIp := ip.IpAddress{192, 168, 2, 4}
+	util_test.TestIpAddress(t, result.FromIp, expectedIp, "FromIp")
+	util_test.TestIpAddress(t, result.ToIp, expectedIp, "ToIp")
 }
 
 func TestParseConfigFromFlagsWillReturnErrorIfInvalidIpAddress(t *testing.T) {
@@ -194,7 +225,7 @@ func TestParseConfigFromFlagsWillReturnErrorIfFromIpGreaterThanToIp(t *testing.T
 	}
 }
 
-func TestParseConfigFromFlagsWillReturnErrorIfErrorWhenComparingIps(t *testing.T) {
+func TestParseConfigFromFlagsWillReturnErrorIfErrorWhenComparingIpsAreCorrectWayRound(t *testing.T) {
 	// setup mocks
 	oldArgs := os.Args
 	oldCommandLine := flag.CommandLine
