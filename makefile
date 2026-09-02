@@ -24,8 +24,12 @@ create-snapshot-directories:
 	mkdir -p snapshots/ip
 
 test: create-snapshot-directories
-	go test -v ./...
+	./scripts/unit_tests.sh
 .PHONY:test
+
+e2e-test:
+	./scripts/e2e_tests.sh
+.PHONY:e2e-test
 
 update-test-snapshots: create-snapshot-directories
 	go test ./ip... -v -update
