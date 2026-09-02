@@ -20,10 +20,13 @@ build-prod: vet lint
 	go build -ldflags=-w .
 .PHONY:build-prod
 
-test:
+create-snapshot-directories:
+	mkdir -p snapshots/ip
+
+test: create-snapshot-directories
 	go test -v ./...
 .PHONY:test
 
-update-test-snapshots:
+update-test-snapshots: create-snapshot-directories
 	go test ./ip... -v -update
 .PHONY:update-test-snapshots
