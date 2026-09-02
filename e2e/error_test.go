@@ -8,7 +8,7 @@ import (
 func TestProgramPrintsInvalidConfigErrorWithCorrectStatusCode(t *testing.T) {
 	output, errOutput, exitStatus, err := runProgram("-from", "192.168.0.2", "-to", "192.168.0.1")
 	if err != nil {
-		t.Errorf("error while running command: %v", err.Error())
+		t.Errorf("error while running command: %v", err)
 		return
 	}
 
@@ -19,7 +19,7 @@ func TestProgramPrintsInvalidConfigErrorWithCorrectStatusCode(t *testing.T) {
 	expectedErrText := "-from ip address is greater than -to ip address"
 
 	if !strings.Contains(errOutput, expectedErrText) {
-		t.Errorf("expected error output to contain '%v'. got '%v'", expectedErrText, errOutput)
+		t.Errorf("expected error output to contain '%s'. got '%s'", expectedErrText, errOutput)
 	}
 
 	expectedExitCode := 1
@@ -32,7 +32,7 @@ func TestProgramPrintsInvalidConfigErrorWithCorrectStatusCode(t *testing.T) {
 func TestProgramPrintsIpNotFoundErrorWithCorrectStatusCode(t *testing.T) {
 	output, errOutput, exitStatus, err := runProgram("-from", "0.0.0.0", "-to", "0.0.0.0")
 	if err != nil {
-		t.Errorf("error while running command: %v", err.Error())
+		t.Errorf("error while running command: %v", err)
 		return
 	}
 
@@ -43,7 +43,7 @@ func TestProgramPrintsIpNotFoundErrorWithCorrectStatusCode(t *testing.T) {
 	expectedErrText := "unable to find ip"
 
 	if !strings.Contains(errOutput, expectedErrText) {
-		t.Errorf("expected error output to contain '%v'. got '%v'", expectedErrText, errOutput)
+		t.Errorf("expected error output to contain '%s'. got '%s'", expectedErrText, errOutput)
 	}
 
 	expectedExitCode := 0
