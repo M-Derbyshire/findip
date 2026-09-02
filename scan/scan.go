@@ -11,9 +11,13 @@ import (
 	"sync"
 )
 
+var (
+	HttpGet = http.Get
+)
+
 // Scans for the IP address that responds with a body that includes the expected search-text string. Returns
 // an empty string if the IP is not found, otherwise returns the IP address as a string
-var RunIpScan = func(conf config.Config) string {
+func RunIpScan(conf config.Config) string {
 	fullIpList := ip.GenerateIpAddressStrings(conf.FromIp, conf.ToIp)
 	ipLists := util.SplitSliceIntoMaxLengthSlices(fullIpList, conf.BatchSize)
 
@@ -46,7 +50,7 @@ func sendRequests(ips []string, port uint, endpoint string, protocol string) []r
 		go func() {
 			defer wg.Done()
 
-			resp, err := http.Get(urlStr)
+			resp, err := HttpGet(urlStr)
 			if err == nil {
 				data := responseData{
 					ip:   ip,
