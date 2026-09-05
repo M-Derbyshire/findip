@@ -2,17 +2,14 @@ package util
 
 import (
 	"findip/ip"
-	"flag"
 	"os"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
 
-var updateTestSnapshots = flag.Bool("update", false, "update golden snaphot files")
-
-func ValidateSnapshot(t *testing.T, resultBytes []byte, snapshotPath string) {
-	if *updateTestSnapshots {
+func ValidateSnapshot(t *testing.T, resultBytes []byte, snapshotPath string, updateSnapshots bool) {
+	if updateSnapshots {
 		err := os.WriteFile(snapshotPath, resultBytes, 0644)
 		if err != nil {
 			t.Errorf("error while updating snapshot: '%v'", err)

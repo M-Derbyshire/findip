@@ -3,10 +3,13 @@ package ip_test
 import (
 	"findip/ip"
 	util_test "findip/util"
+	"flag"
 	"fmt"
 	"strings"
 	"testing"
 )
+
+var updateTestSnapshots = flag.Bool("update", false, "update golden snaphot files")
 
 func TestGenerateIpAddressStringsGeneratesTheExpectedIps(t *testing.T) {
 	tests := []struct {
@@ -34,7 +37,7 @@ func TestGenerateIpAddressStringsGeneratesTheExpectedIps(t *testing.T) {
 			resultsSingle := strings.Join(results, "\n")
 			resultsBytes := []byte(resultsSingle)
 
-			util_test.ValidateSnapshot(t, resultsBytes, pathToGolden)
+			util_test.ValidateSnapshot(t, resultsBytes, pathToGolden, *updateTestSnapshots)
 		})
 	}
 }
