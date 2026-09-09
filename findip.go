@@ -2,6 +2,7 @@ package main
 
 import (
 	"findip/config"
+	"findip/info"
 	"findip/scan"
 	"fmt"
 	"os"
@@ -12,6 +13,11 @@ func main() {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err.Error())
 		os.Exit(1)
+	}
+
+	if conf.RequestedBehaviour == config.BehaviourPrintVersion {
+		fmt.Println(info.Version)
+		return
 	}
 
 	resultIp := scan.RunIpScan(conf)

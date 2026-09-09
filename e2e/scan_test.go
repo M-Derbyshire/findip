@@ -30,6 +30,7 @@ func TestProgramPrintsFoundIp(t *testing.T) {
 			fmt.Fprintln(os.Stderr, logStr)
 		}
 	}()
+	defer server.Shutdown(context.Background())
 
 	// Now run the program, looking for the endpoint we're running
 	output, errOutput, exitStatus, err := runProgram("-from", expectedIp, "-to", expectedIp, "-port", "8080", "-searchtext", searchText)
@@ -49,11 +50,7 @@ func TestProgramPrintsFoundIp(t *testing.T) {
 	}
 
 	expectedExitCode := 0
-
 	if exitStatus != expectedExitCode {
 		t.Errorf("expected exit code to be %d. got %d", expectedExitCode, exitStatus)
 	}
-
-	// cleanup
-	server.Shutdown(context.Background())
 }
