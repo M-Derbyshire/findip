@@ -4,19 +4,15 @@ fmt:
 	go fmt ./...
 .PHONY:fmt
 
-lint: fmt
-	golint ./...
-.PHONY:lint
-
 vet: fmt
 	go vet ./...
 .PHONY:vet
 
-build-dev: vet lint
+build-dev: vet
 	go build .
 .PHONY:build-dev
 
-build-prod: vet lint
+build-prod: vet
 	go build -ldflags=-w .
 .PHONY:build-prod
 
